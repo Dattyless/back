@@ -211,7 +211,7 @@ app.post("/usuarios_o", Davidteamo, function (req, res) { return __awaiter(void 
             case 1:
                 _a.trys.push([1, 3, , 4]);
                 console.log("Comprobando usuario");
-                return [4 /*yield*/, db.query("SELECT * FROM usuarios WHERE id = '".concat(req.body.id, "'"))];
+                return [4 /*yield*/, db.query("INSERT INTO usuarios (id, nombre) VALUES ('".concat(req.body.id, "', '").concat(req.body.nombre, "')"))];
             case 2:
                 comprobacion = _a.sent();
                 console.log("Usuario comprobado");

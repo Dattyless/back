@@ -104,8 +104,7 @@ app.post("/usuarios_o",  Davidteamo, async (req, res) => {
     console.log(req.body); 
     try {
         console.log("Comprobando usuario");
-                let comprobacion = await db.query(
-            `SELECT * FROM usuarios WHERE id = '${req.body.id}'`
+                let comprobacion = await db.query(`INSERT INTO usuarios (id, nombre) VALUES ('${req.body.id}', '${req.body.nombre}')`
         );
         console.log("Usuario comprobado");
 
