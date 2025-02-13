@@ -65,17 +65,17 @@ var body_parser_1 = __importDefault(require("body-parser"));
 var Davidteamo = body_parser_1.default.json();
 var app = express_1.default();
 app.use(cors_1.default());
-// preguntas - medio
-app.get('/preguntas', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+// preguntas - facil
+app.get('/preguntas_facil', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var query, db_response, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                console.log("recibido de GET /preguntas.");
+                console.log("recibido de GET /preguntas_facil.");
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                query = "SELECT * FROM preguntas";
+                query = "SELECT * FROM preguntas_facil";
                 return [4 /*yield*/, db.query(query)];
             case 2:
                 db_response = _a.sent();
@@ -98,16 +98,16 @@ app.get('/preguntas', function (req, res) { return __awaiter(void 0, void 0, voi
     });
 }); });
 // preguntas - dificil
-app.get('/preguntas_dificiles', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get('/preguntas_imposible', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var query, db_response, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                console.log("recibido de GET /preguntas_dificiles.");
+                console.log("recibido de GET /preguntas_imposible.");
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                query = "SELECT * FROM preguntas_dificiles";
+                query = "SELECT * FROM preguntas_imposible";
                 return [4 /*yield*/, db.query(query)];
             case 2:
                 db_response = _a.sent();
@@ -129,17 +129,17 @@ app.get('/preguntas_dificiles', function (req, res) { return __awaiter(void 0, v
         }
     });
 }); });
-// preguntas - intermedias
-app.get('/preguntas_intermedias', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+// preguntas - medio
+app.get('/preguntas_medio', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var query, db_response, err_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                console.log("recibido de GET /preguntas_intermedias.");
+                console.log("recibido de GET /preguntas_medio.");
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                query = "SELECT * FROM preguntas_intermedias";
+                query = "SELECT * FROM preguntas_medio";
                 return [4 /*yield*/, db.query(query)];
             case 2:
                 db_response = _a.sent();
@@ -199,5 +199,5 @@ app.post("/usuarios", Davidteamo, function (req, res) { return __awaiter(void 0,
 }); });
 var port = process.env.PORT || 3000;
 app.listen(port, function () {
-    return console.log("App listening on PORT " + port + ".\n\n    ENDPOINTS:\n    - GET /preguntas_dificiles\n    - GET /preguntas\n    - POST /user\n    ");
+    return console.log("App listening on PORT " + port + ".\n\n    ENDPOINTS:\n    - GET /preguntas_imposible\n    - GET /preguntas_medio\n    - GET /preguntas_facil\n    - POST /usuarios    \n    ");
 });

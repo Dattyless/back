@@ -7,12 +7,12 @@ const Davidteamo = bodyParser.json();
 const app = express();
 app.use(cors());
 
-// preguntas - medio
-app.get('/preguntas', async (req, res) => {
-    console.log(`recibido de GET /preguntas.`);
+// preguntas - facil
+app.get('/preguntas_facil', async (req, res) => {
+    console.log(`recibido de GET /preguntas_facil.`);
 
     try {
-        let query = `SELECT * FROM preguntas`; 
+        let query = `SELECT * FROM preguntas_facil`; 
         let db_response = await db.query(query);
 
         if (db_response.rows.length > 0) {
@@ -30,11 +30,11 @@ app.get('/preguntas', async (req, res) => {
 });
 
 // preguntas - dificil
-app.get('/preguntas_dificiles', async (req, res) => {
-    console.log(`recibido de GET /preguntas_dificiles.`);
+app.get('/preguntas_imposible', async (req, res) => {
+    console.log(`recibido de GET /preguntas_imposible.`);
 
     try {
-        let query = `SELECT * FROM preguntas_dificiles`; 
+        let query = `SELECT * FROM preguntas_imposible`; 
         let db_response = await db.query(query);
 
         if (db_response.rows.length > 0) {
@@ -51,12 +51,12 @@ app.get('/preguntas_dificiles', async (req, res) => {
     }
 });
 
-// preguntas - intermedias
-app.get('/preguntas_intermedias', async (req, res) => {
-    console.log(`recibido de GET /preguntas_intermedias.`);
+// preguntas - medio
+app.get('/preguntas_medio', async (req, res) => {
+    console.log(`recibido de GET /preguntas_medio.`);
 
     try {
-        let query = `SELECT * FROM preguntas_intermedias`; 
+        let query = `SELECT * FROM preguntas_medio`; 
         let db_response = await db.query(query);
 
         if (db_response.rows.length > 0) {
@@ -106,7 +106,8 @@ app.listen(port, () =>
     console.log(`App listening on PORT ${port}.
 
     ENDPOINTS:
-    - GET /preguntas_dificiles
-    - GET /preguntas
-    - POST /user
+    - GET /preguntas_imposible
+    - GET /preguntas_medio
+    - GET /preguntas_facil
+    - POST /usuarios    
     `));
