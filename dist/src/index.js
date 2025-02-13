@@ -165,66 +165,63 @@ app.get('/preguntas_medias', function (req, res) { return __awaiter(void 0, void
         }
     });
 }); });
-// crear usuario
-app.post("/usuarios", Davidteamo, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var comprobacion, err_4;
+app.get('/usuarios/:email', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var query, db_response, err_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                console.log(req.body);
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 6, , 7]);
-                console.log("Comprobando usuario");
-                return [4 /*yield*/, db.query("SELECT * FROM usuarios WHERE id = '".concat(req.body.id, "'"))];
-            case 2:
-                comprobacion = _a.sent();
-                console.log("Usuario comprobado");
-                if (!(comprobacion.rows.length < 1)) return [3 /*break*/, 5];
-                return [4 /*yield*/, db.query("INSERT INTO usuarios (id, nombre) VALUES ('".concat(req.body.id, "', '").concat(req.body.nombre, "')"))];
-            case 3:
-                _a.sent();
-                return [4 /*yield*/, db.query("SELECT * FROM usuarios WHERE id = '".concat(req.body.id, "'"))];
-            case 4:
-                comprobacion = _a.sent();
-                console.log("Usuario creado");
-                _a.label = 5;
-            case 5:
-                res.json(comprobacion.rows[0]);
-                return [3 /*break*/, 7];
-            case 6:
-                err_4 = _a.sent();
-                console.error(err_4);
-                res.status(500).send("Internal Server Error");
-                return [3 /*break*/, 7];
-            case 7: return [2 /*return*/];
-        }
-    });
-}); });
-app.post("/usuarios_o", Davidteamo, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var comprobacion, err_5;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                console.log(req.body);
+                console.log("END POINT /users");
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                console.log("Comprobando usuario");
-                return [4 /*yield*/, db.query("INSERT INTO usuarios (id, nombre) VALUES ('".concat(req.body.id, "', '").concat(req.body.nombre, "')"))];
+                query = "select * from users where email = '".concat(req.params.email, "'");
+                return [4 /*yield*/, db.query(query)];
             case 2:
-                comprobacion = _a.sent();
-                console.log("Usuario comprobado");
-                if (comprobacion.rows.length < 1) {
-                    res.json('Usuario no encontrado');
-                    ;
+                db_response = _a.sent();
+                console.log(db_response.rows);
+                if (db_response.rows.length > 0) {
+                    console.log('User encontrado: ${db_response.rows}');
+                    res.json(db_response.rows);
                 }
-                res.json(comprobacion.rows[0]);
+                else {
+                    console.log(req.params.email);
+                    res.json("not found");
+                }
+                return [3 /*break*/, 4];
+            case 3:
+                err_4 = _a.sent();
+                console.error(err_4);
+                res.status(500).send("internal error");
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); });
+app.post('/adduser', Davidteamo, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var query, db_response, err_5;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                console.log("end point crear " + req.body);
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                query = "INSERT INTO users (email, name) VALUES ('".concat(req.body.email, "', '").concat(req.body.name, "');");
+                return [4 /*yield*/, db.query(query)];
+            case 2:
+                db_response = _a.sent();
+                console.log(db_response);
+                if (db_response.rowCount == 1) {
+                    res.json("Todo ha salido bien");
+                }
+                else {
+                    res.json("el registro no ha sido creado ");
+                }
                 return [3 /*break*/, 4];
             case 3:
                 err_5 = _a.sent();
-                console.error(err_5);
-                res.status(500).send("Internal Server Error");
+                console.log(err_5);
+                res.status(500).send('internal Server Error');
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }

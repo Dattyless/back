@@ -74,48 +74,46 @@ app.get('/preguntas_medias', async (req, res) => {
 });
 
 
-// crear usuario
-app.post("/usuarios",  Davidteamo, async (req, res) => {
-    console.log(req.body); 
-    try {
-        console.log("Comprobando usuario");
-                let comprobacion = await db.query(
-            `SELECT * FROM usuarios WHERE id = '${req.body.id}'`
-        );
-        console.log("Usuario comprobado");
+app.get('/usuarios/:email', async (req, res) => {
+    console.log("END POINT /users")
 
-        if (comprobacion.rows.length < 1) {
-            await db.query(
-                `INSERT INTO usuarios (id, nombre) VALUES ('${req.body.id}', '${req.body.nombre}')`
-            );
-            comprobacion = await db.query(
-                `SELECT * FROM usuarios WHERE id = '${req.body.id}'`
-            );
-            console.log("Usuario creado");
-        } 
-        res.json(comprobacion.rows[0]);
-    } catch (err) {
-        console.error(err); 
-        res.status(500).send("Internal Server Error");
+    try{
+        let query = `select * from users where email = '${req.params.email}'`
+        let db_response = await db.query(query)
+
+        console.log(db_response.rows)
+
+        if(db_response.rows.length > 0){
+            console.log('User encontrado: ${db_response.rows}');
+            res.json(db_response.rows);
+        } else {
+            console.log(req.params.email)
+            res.json("not found")
+        }
+
+    }catch (err){
+        console.error(err)
+        res.status(500).send("internal error")
     }
+
 });
+app.post('/adduser' , Davidteamo , async (req, res) => {
+    console.log("end point crear " + req.body)
+    try{
 
-app.post("/usuarios_o",  Davidteamo, async (req, res) => {
-    console.log(req.body); 
-    try {
-        console.log("Comprobando usuario");
-                let comprobacion = await db.query(`INSERT INTO usuarios (id, nombre) VALUES ('${req.body.id}', '${req.body.nombre}')`
-        );
-        console.log("Usuario comprobado");
+        let query = `INSERT INTO users (email, name) VALUES ('${req.body.email}', '${req.body.name}');`
+        let db_response = await db.query(query)
 
-        if (comprobacion.rows.length < 1) {
-        res.json('Usuario no encontrado');;
+        console.log(db_response)
 
-        } 
-        res.json(comprobacion.rows[0]);
+        if(db_response.rowCount == 1){
+            res.json("Todo ha salido bien")
+        } else{
+            res.json("el registro no ha sido creado ")
+        }
     } catch (err) {
-        console.error(err); 
-        res.status(500).send("Internal Server Error");
+        console.log(err)
+        res.status(500).send('internal Server Error')
     }
 });
 
