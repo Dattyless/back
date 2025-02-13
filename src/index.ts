@@ -100,7 +100,7 @@ app.post("/usuarios",  Davidteamo, async (req, res) => {
     }
 });
 
-const port = 10000;
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => 
     console.log(`App listening on PORT ${port}.

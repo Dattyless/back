@@ -197,7 +197,7 @@ app.post("/usuarios", Davidteamo, function (req, res) { return __awaiter(void 0,
         }
     });
 }); });
-var port = 10000;
+var port = process.env.PORT || 3000;
 app.listen(port, function () {
     return console.log("App listening on PORT " + port + ".\n\n    ENDPOINTS:\n    - GET /preguntas_imposibles\n    - GET /preguntas_medias\n    - GET /preguntas_faciles\n    - POST /usuarios    \n    ");
 });
