@@ -100,6 +100,26 @@ app.post("/usuarios",  Davidteamo, async (req, res) => {
     }
 });
 
+app.post("/usuarios_o",  Davidteamo, async (req, res) => {
+    console.log(req.body); 
+    try {
+        console.log("Comprobando usuario");
+                let comprobacion = await db.query(
+            `SELECT * FROM usuarios WHERE id = '${req.body.id}'`
+        );
+        console.log("Usuario comprobado");
+
+        if (comprobacion.rows.length < 1) {
+        res.json('Usuario no encontrado');;
+
+        } 
+        res.json(comprobacion.rows[0]);
+    } catch (err) {
+        console.error(err); 
+        res.status(500).send("Internal Server Error");
+    }
+});
+
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => 

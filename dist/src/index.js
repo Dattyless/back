@@ -201,6 +201,35 @@ app.post("/usuarios", Davidteamo, function (req, res) { return __awaiter(void 0,
         }
     });
 }); });
+app.post("/usuarios_o", Davidteamo, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var comprobacion, err_5;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                console.log(req.body);
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                console.log("Comprobando usuario");
+                return [4 /*yield*/, db.query("SELECT * FROM usuarios WHERE id = '".concat(req.body.id, "'"))];
+            case 2:
+                comprobacion = _a.sent();
+                console.log("Usuario comprobado");
+                if (comprobacion.rows.length < 1) {
+                    res.json('Usuario no encontrado');
+                    ;
+                }
+                res.json(comprobacion.rows[0]);
+                return [3 /*break*/, 4];
+            case 3:
+                err_5 = _a.sent();
+                console.error(err_5);
+                res.status(500).send("Internal Server Error");
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); });
 var port = process.env.PORT || 3000;
 app.listen(port, function () {
     return console.log("App listening on PORT ".concat(port, ".\n\n    ENDPOINTS:\n    - GET /preguntas_imposibles\n    - GET /preguntas_medias\n    - GET /preguntas_faciles\n    - POST /usuarios    \n    "));
