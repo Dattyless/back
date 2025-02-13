@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -33,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -63,8 +67,8 @@ var cors_1 = __importDefault(require("cors"));
 var db = __importStar(require("./db-connection"));
 var body_parser_1 = __importDefault(require("body-parser"));
 var Davidteamo = body_parser_1.default.json();
-var app = express_1.default();
-app.use(cors_1.default());
+var app = (0, express_1.default)();
+app.use((0, cors_1.default)());
 // preguntas - faciles
 app.get('/preguntas_faciles', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var query, db_response, err_1;
@@ -172,15 +176,15 @@ app.post("/usuarios", Davidteamo, function (req, res) { return __awaiter(void 0,
             case 1:
                 _a.trys.push([1, 6, , 7]);
                 console.log("Comprobando usuario");
-                return [4 /*yield*/, db.query("SELECT * FROM usuarios WHERE id = '" + req.body.id + "'")];
+                return [4 /*yield*/, db.query("SELECT * FROM usuarios WHERE id = '".concat(req.body.id, "'"))];
             case 2:
                 comprobacion = _a.sent();
                 console.log("Usuario comprobado");
                 if (!(comprobacion.rows.length < 1)) return [3 /*break*/, 5];
-                return [4 /*yield*/, db.query("INSERT INTO usuarios (id, nombre) VALUES ('" + req.body.id + "', '" + req.body.nombre + "')")];
+                return [4 /*yield*/, db.query("INSERT INTO usuarios (id, nombre) VALUES ('".concat(req.body.id, "', '").concat(req.body.nombre, "')"))];
             case 3:
                 _a.sent();
-                return [4 /*yield*/, db.query("SELECT * FROM usuarios WHERE id = '" + req.body.id + "'")];
+                return [4 /*yield*/, db.query("SELECT * FROM usuarios WHERE id = '".concat(req.body.id, "'"))];
             case 4:
                 comprobacion = _a.sent();
                 console.log("Usuario creado");
@@ -199,5 +203,5 @@ app.post("/usuarios", Davidteamo, function (req, res) { return __awaiter(void 0,
 }); });
 var port = process.env.PORT || 3000;
 app.listen(port, function () {
-    return console.log("App listening on PORT " + port + ".\n\n    ENDPOINTS:\n    - GET /preguntas_imposibles\n    - GET /preguntas_medias\n    - GET /preguntas_faciles\n    - POST /usuarios    \n    ");
+    return console.log("App listening on PORT ".concat(port, ".\n\n    ENDPOINTS:\n    - GET /preguntas_imposibles\n    - GET /preguntas_medias\n    - GET /preguntas_faciles\n    - POST /usuarios    \n    "));
 });
