@@ -1,130 +1,158 @@
 import express from "express";
 import cors from 'cors';
-import * as db from './db-connection';
+import { query } from './db-connection'; // Importa la función query desde db-connection.ts
 import bodyParser from 'body-parser';
 const Davidteamo = bodyParser.json();
 
 const app = express();
 app.use(cors());
 
-// preguntas - faciles
+// Endpoint para obtener preguntas fáciles
 app.get('/preguntas_faciles', async (req, res) => {
-    console.log(`recibido de GET /preguntas_faciles.`);
-
     try {
-        let query = `SELECT * FROM preguntas_faciles`; 
-        let db_response = await db.query(query);
+        let queryText = `SELECT * FROM preguntas_faciles`;
+        let db_response = await query(queryText);
 
         if (db_response.rows.length > 0) {
-            console.log('Preguntas obtenidas:', db_response.rows);
-            res.json(db_response.rows); 
+            res.status(200).json(db_response.rows);
         } else {
-            console.log('No se encontraron preguntas');
-            res.json([]);  
+            res.status(404).json({ error: 'No se encontraron preguntas' });
         }
-
     } catch (err) {
         console.error(err);
-        res.status(500).send('Internal Server Error');
+        res.status(500).json({ error: 'Error al obtener preguntas' });
     }
 });
 
-// preguntas - dificil
-app.get('/preguntas_imposibles', async (req, res) => {
-    console.log(`recibido de GET /preguntas_imposibles.`);
-
-    try {
-        let query = `SELECT * FROM preguntas_imposibles`; 
-        let db_response = await db.query(query);
-
-        if (db_response.rows.length > 0) {
-            console.log('Preguntas obtenidas:', db_response.rows);
-            res.json(db_response.rows); 
-        } else {
-            console.log('No se encontraron preguntas');
-            res.json([]);  
-        }
-
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Internal Server Error');
-    }
-});
-
-// preguntas - medias
+// Endpoint para obtener preguntas medias
 app.get('/preguntas_medias', async (req, res) => {
-    console.log(`recibido de GET /preguntas_medias.`);
-
     try {
-        let query = `SELECT * FROM preguntas_medias`; 
-        let db_response = await db.query(query);
+        let queryText = `SELECT * FROM preguntas_medias`;
+        let db_response = await query(queryText);
 
         if (db_response.rows.length > 0) {
-            console.log('Preguntas obtenidas:', db_response.rows);
-            res.json(db_response.rows); 
+            res.status(200).json(db_response.rows);
         } else {
-            console.log('No se encontraron preguntas');
-            res.json([]);  
+            res.status(404).json({ error: 'No se encontraron preguntas' });
         }
-
     } catch (err) {
         console.error(err);
-        res.status(500).send('Internal Server Error');
+        res.status(500).json({ error: 'Error al obtener preguntas' });
     }
 });
 
+// Endpoint para obtener preguntas difíciles
+app.get('/preguntas_imposibles', async (req, res) => {
+    try {
+        let queryText = `SELECT * FROM preguntas_imposibles`;
+        let db_response = await query(queryText);
 
-app.get('/usuarios/:email', async (req, res) => {
-    console.log("END POINT /users")
-
-    try{
-        let query = `select * from users where email = '${req.params.email}'`
-        let db_response = await db.query(query)
-
-        console.log(db_response.rows)
-
-        if(db_response.rows.length > 0){
-            console.log('User encontrado: ${db_response.rows}');
-            res.json(db_response.rows);
+        if (db_response.rows.length > 0) {
+            res.status(200).json(db_response.rows);
         } else {
-            console.log(req.params.email)
-            res.json("not found")
-        }
-
-    }catch (err){
-        console.error(err)
-        res.status(500).send("internal error")
-    }
-
-});
-app.post('/adduser' , Davidteamo , async (req, res) => {
-    console.log("end point crear " + req.body)
-    try{
-
-        let query = `INSERT INTO users (email, name) VALUES ('${req.body.email}', '${req.body.name}');`
-        let db_response = await db.query(query)
-
-        console.log(db_response)
-
-        if(db_response.rowCount == 1){
-            res.json("Todo ha salido bien")
-        } else{
-            res.json("el registro no ha sido creado ")
+            res.status(404).json({ error: 'No se encontraron preguntas' });
         }
     } catch (err) {
-        console.log(err)
-        res.status(500).send('internal Server Error')
+        console.error(err);
+        res.status(500).json({ error: 'Error al obtener preguntas' });
+    }
+});
+
+// Endpoint para obtener un usuario por email
+app.get('/usuarios/:email', async (req, res) => {
+    const email = req.params.email;
+
+    try {
+        let queryText = `SELECT * FROM users WHERE email = $1`;
+        let db_response = await query(queryText, [email]);
+
+        if (db_response.rows.length > 0) {
+            res.status(200).json(db_response.rows[0]); // Devuelve el usuario encontrado
+        } else {
+            res.status(404).json({ error: 'Usuario no encontrado' }); // Usuario no existe
+        }
+    } catch (err) {
+        console.error('Error en la consulta SQL:', err);
+        res.status(500).json({ error: 'Error interno del servidor al obtener el usuario' });
+    }
+});
+// Endpoint para crear un nuevo usuario
+app.post('/adduser', Davidteamo, async (req, res) => {
+    const { email, name } = req.body;
+
+    try {
+        // Verificar si el usuario ya existe
+        let checkUserQuery = `SELECT * FROM users WHERE email = $1`;
+        let checkUserResponse = await query(checkUserQuery, [email]);
+
+        if (checkUserResponse.rows.length > 0) {
+            res.status(400).json({ error: 'El usuario ya existe' });
+            return;
+        }
+
+        // Crear el nuevo usuario
+        let insertUserQuery = `INSERT INTO users (email, name) VALUES ($1, $2)`;
+        let insertUserResponse = await query(insertUserQuery, [email, name]);
+
+        if (insertUserResponse.rowCount === 1) {
+            res.status(200).json({ message: 'Usuario creado correctamente' });
+        } else {
+            res.status(400).json({ error: 'El registro no ha sido creado' });
+        }
+    } catch (err) {
+        console.error('Error al crear el usuario:', err);
+        res.status(500).json({ error: 'Error interno del servidor al crear el usuario' });
+    }
+});
+
+// Endpoint para actualizar puntos de un usuario
+app.post('/usuarios/:email/puntos', Davidteamo, async (req, res) => {
+    const email = req.params.email;
+    const { puntos } = req.body;
+
+    try {
+        let queryText = "UPDATE users SET puntos = puntos + $1 WHERE email = $2";
+        let db_response = await query(queryText, [puntos, email]);
+
+        if (db_response.rowCount === 1) {
+            res.status(200).json({ message: 'Puntos actualizados correctamente' });
+        } else {
+            res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error al actualizar puntos' });
+    }
+});
+
+// Endpoint para obtener el ranking de usuarios
+app.get('/ranking', async (req, res) => {
+    try {
+        let queryText = `SELECT name, puntos FROM users ORDER BY puntos DESC`;
+        let db_response = await query(queryText);
+
+        if (db_response.rows.length > 0) {
+            res.status(200).json(db_response.rows);
+        } else {
+            res.status(404).json({ error: 'No hay usuarios registrados' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error al obtener el ranking' });
     }
 });
 
 const port = process.env.PORT || 3001;
-
-app.listen(port, () => 
+app.listen(port, () => {
     console.log(`App listening on PORT ${port}.
 
     ENDPOINTS:
+    - GET /preguntas_faciles
     - GET /preguntas_imposibles
     - GET /preguntas_medias
-    - GET /preguntas_faciles
-    - POST /usuarios    
-    `));
+    - GET /usuarios/:email
+    - POST /adduser
+    - POST /usuarios/:email/puntos
+    - GET /ranking
+    `);
+});
