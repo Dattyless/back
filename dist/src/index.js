@@ -137,7 +137,7 @@ app.get('/usuarios/:email', function (req, res) { return __awaiter(void 0, void 
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                queryText = "SELECT * FROM users WHERE email = $1";
+                queryText = "SELECT * FROM usuarios WHERE email = $1";
                 return [4 /*yield*/, (0, db_connection_1.query)(queryText, [email])];
             case 2:
                 db_response = _a.sent();
@@ -167,7 +167,7 @@ app.post('/adduser', Davidteamo, function (req, res) { return __awaiter(void 0, 
                 _b.label = 1;
             case 1:
                 _b.trys.push([1, 4, , 5]);
-                checkUserQuery = "SELECT * FROM users WHERE email = $1";
+                checkUserQuery = "SELECT * FROM usuarios WHERE email = $1";
                 return [4 /*yield*/, (0, db_connection_1.query)(checkUserQuery, [email])];
             case 2:
                 checkUserResponse = _b.sent();
@@ -175,7 +175,7 @@ app.post('/adduser', Davidteamo, function (req, res) { return __awaiter(void 0, 
                     res.status(400).json({ error: 'El usuario ya existe' });
                     return [2 /*return*/];
                 }
-                insertUserQuery = "INSERT INTO users (email, name) VALUES ($1, $2)";
+                insertUserQuery = "INSERT INTO usuarios (email, name) VALUES ($1, $2)";
                 return [4 /*yield*/, (0, db_connection_1.query)(insertUserQuery, [email, name])];
             case 3:
                 insertUserResponse = _b.sent();
@@ -206,7 +206,7 @@ app.post('/usuarios/:email/puntos', Davidteamo, function (req, res) { return __a
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                queryText = "UPDATE users SET puntos = puntos + $1 WHERE email = $2";
+                queryText = "UPDATE usuarios SET puntos = puntos + $1 WHERE email = $2";
                 return [4 /*yield*/, (0, db_connection_1.query)(queryText, [puntos, email])];
             case 2:
                 db_response = _a.sent();
@@ -233,7 +233,7 @@ app.get('/ranking', function (req, res) { return __awaiter(void 0, void 0, void 
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                queryText = "SELECT name, puntos FROM users ORDER BY puntos DESC";
+                queryText = "SELECT name, puntos FROM usuarios ORDER BY puntos DESC";
                 return [4 /*yield*/, (0, db_connection_1.query)(queryText)];
             case 1:
                 db_response = _a.sent();

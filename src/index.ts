@@ -63,7 +63,7 @@ app.get('/usuarios/:email', async (req, res) => {
     const email = req.params.email;
 
     try {
-        let queryText = `SELECT * FROM users WHERE email = $1`;
+        let queryText = `SELECT * FROM usuarios WHERE email = $1`;
         let db_response = await query(queryText, [email]);
 
         if (db_response.rows.length > 0) {
@@ -83,7 +83,7 @@ app.post('/adduser', Davidteamo, async (req, res) => {
 
     try {
         // Verificar si el usuario ya existe
-        let checkUserQuery = `SELECT * FROM users WHERE email = $1`;
+        let checkUserQuery = `SELECT * FROM usuarios WHERE email = $1`;
         let checkUserResponse = await query(checkUserQuery, [email]);
 
         if (checkUserResponse.rows.length > 0) {
@@ -92,7 +92,7 @@ app.post('/adduser', Davidteamo, async (req, res) => {
         }
 
         // Crear el nuevo usuario
-        let insertUserQuery = `INSERT INTO users (email, name) VALUES ($1, $2)`;
+        let insertUserQuery = `INSERT INTO usuarios (email, name) VALUES ($1, $2)`;
         let insertUserResponse = await query(insertUserQuery, [email, name]);
 
         if (insertUserResponse.rowCount === 1) {
@@ -112,7 +112,7 @@ app.post('/usuarios/:email/puntos', Davidteamo, async (req, res) => {
     const { puntos } = req.body;
 
     try {
-        let queryText = "UPDATE users SET puntos = puntos + $1 WHERE email = $2";
+        let queryText = "UPDATE usuarios SET puntos = puntos + $1 WHERE email = $2";
         let db_response = await query(queryText, [puntos, email]);
 
         if (db_response.rowCount === 1) {
@@ -129,7 +129,7 @@ app.post('/usuarios/:email/puntos', Davidteamo, async (req, res) => {
 // Endpoint para obtener el ranking de usuarios
 app.get('/ranking', async (req, res) => {
     try {
-        let queryText = `SELECT name, puntos FROM users ORDER BY puntos DESC`;
+        let queryText = `SELECT name, puntos FROM usuarios ORDER BY puntos DESC`;
         let db_response = await query(queryText);
 
         if (db_response.rows.length > 0) {
