@@ -46,9 +46,90 @@ var body_parser_1 = __importDefault(require("body-parser"));
 var Davidteamo = body_parser_1.default.json();
 var app = (0, express_1.default)();
 app.use((0, cors_1.default)());
+// Endpoint para obtener preguntas fáciles
+app.get('/preguntas_faciles', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var queryText, db_response, err_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                queryText = "SELECT * FROM preguntas_faciles";
+                return [4 /*yield*/, (0, db_connection_1.query)(queryText)];
+            case 1:
+                db_response = _a.sent();
+                if (db_response.rows.length > 0) {
+                    res.status(200).json(db_response.rows);
+                }
+                else {
+                    res.status(404).json({ error: 'No se encontraron preguntas' });
+                }
+                return [3 /*break*/, 3];
+            case 2:
+                err_1 = _a.sent();
+                console.error(err_1);
+                res.status(500).json({ error: 'Error al obtener preguntas' });
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
+// Endpoint para obtener preguntas medias
+app.get('/preguntas_medias', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var queryText, db_response, err_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                queryText = "SELECT * FROM preguntas_medias";
+                return [4 /*yield*/, (0, db_connection_1.query)(queryText)];
+            case 1:
+                db_response = _a.sent();
+                if (db_response.rows.length > 0) {
+                    res.status(200).json(db_response.rows);
+                }
+                else {
+                    res.status(404).json({ error: 'No se encontraron preguntas' });
+                }
+                return [3 /*break*/, 3];
+            case 2:
+                err_2 = _a.sent();
+                console.error(err_2);
+                res.status(500).json({ error: 'Error al obtener preguntas' });
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
+// Endpoint para obtener preguntas difíciles
+app.get('/preguntas_imposibles', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var queryText, db_response, err_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                queryText = "SELECT * FROM preguntas_imposibles";
+                return [4 /*yield*/, (0, db_connection_1.query)(queryText)];
+            case 1:
+                db_response = _a.sent();
+                if (db_response.rows.length > 0) {
+                    res.status(200).json(db_response.rows);
+                }
+                else {
+                    res.status(404).json({ error: 'No se encontraron preguntas' });
+                }
+                return [3 /*break*/, 3];
+            case 2:
+                err_3 = _a.sent();
+                console.error(err_3);
+                res.status(500).json({ error: 'Error al obtener preguntas' });
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
 // Endpoint para obtener un usuario por email
 app.get('/usuarios/:email', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var email, queryText, db_response, err_1;
+    var email, queryText, db_response, err_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -68,8 +149,8 @@ app.get('/usuarios/:email', function (req, res) { return __awaiter(void 0, void 
                 }
                 return [3 /*break*/, 4];
             case 3:
-                err_1 = _a.sent();
-                console.error('Error en la consulta SQL:', err_1);
+                err_4 = _a.sent();
+                console.error('Error en la consulta SQL:', err_4);
                 res.status(500).json({ error: 'Error interno del servidor al obtener el usuario' });
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
@@ -78,7 +159,7 @@ app.get('/usuarios/:email', function (req, res) { return __awaiter(void 0, void 
 }); });
 // Endpoint para crear un nuevo usuario
 app.post('/adduser', Davidteamo, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, email, name, checkUserQuery, checkUserResponse, insertUserQuery, insertUserResponse, err_2;
+    var _a, email, name, checkUserQuery, checkUserResponse, insertUserQuery, insertUserResponse, err_5;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -106,8 +187,8 @@ app.post('/adduser', Davidteamo, function (req, res) { return __awaiter(void 0, 
                 }
                 return [3 /*break*/, 5];
             case 4:
-                err_2 = _b.sent();
-                console.error('Error al crear el usuario:', err_2);
+                err_5 = _b.sent();
+                console.error('Error al crear el usuario:', err_5);
                 res.status(500).json({ error: 'Error interno del servidor al crear el usuario' });
                 return [3 /*break*/, 5];
             case 5: return [2 /*return*/];
@@ -116,7 +197,7 @@ app.post('/adduser', Davidteamo, function (req, res) { return __awaiter(void 0, 
 }); });
 // Endpoint para actualizar puntos de un usuario
 app.post('/usuarios/:email/puntos', Davidteamo, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var email, puntos, queryText, db_response, err_3;
+    var email, puntos, queryText, db_response, err_6;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -137,8 +218,8 @@ app.post('/usuarios/:email/puntos', Davidteamo, function (req, res) { return __a
                 }
                 return [3 /*break*/, 4];
             case 3:
-                err_3 = _a.sent();
-                console.error(err_3);
+                err_6 = _a.sent();
+                console.error(err_6);
                 res.status(500).json({ error: 'Error al actualizar puntos' });
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
@@ -147,7 +228,7 @@ app.post('/usuarios/:email/puntos', Davidteamo, function (req, res) { return __a
 }); });
 // Endpoint para obtener el ranking de usuarios
 app.get('/ranking', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var queryText, db_response, err_4;
+    var queryText, db_response, err_7;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -164,8 +245,8 @@ app.get('/ranking', function (req, res) { return __awaiter(void 0, void 0, void 
                 }
                 return [3 /*break*/, 3];
             case 2:
-                err_4 = _a.sent();
-                console.error(err_4);
+                err_7 = _a.sent();
+                console.error(err_7);
                 res.status(500).json({ error: 'Error al obtener el ranking' });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
