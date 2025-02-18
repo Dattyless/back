@@ -76,6 +76,7 @@ app.get('/usuarios/:email', async (req, res) => {
         res.status(500).json({ error: 'Error interno del servidor al obtener el usuario' });
     }
 });
+
 // Endpoint para crear un nuevo usuario
 app.post('/adduser', Davidteamo, async (req, res) => {
     const { email, name } = req.body;
