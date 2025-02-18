@@ -7,57 +7,6 @@ const Davidteamo = bodyParser.json();
 const app = express();
 app.use(cors());
 
-// Endpoint para obtener preguntas fáciles
-app.get('/preguntas_faciles', async (req, res) => {
-    try {
-        let queryText = `SELECT * FROM preguntas_faciles`;
-        let db_response = await query(queryText);
-
-        if (db_response.rows.length > 0) {
-            res.status(200).json(db_response.rows);
-        } else {
-            res.status(404).json({ error: 'No se encontraron preguntas' });
-        }
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Error al obtener preguntas' });
-    }
-});
-
-// Endpoint para obtener preguntas medias
-app.get('/preguntas_medias', async (req, res) => {
-    try {
-        let queryText = `SELECT * FROM preguntas_medias`;
-        let db_response = await query(queryText);
-
-        if (db_response.rows.length > 0) {
-            res.status(200).json(db_response.rows);
-        } else {
-            res.status(404).json({ error: 'No se encontraron preguntas' });
-        }
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Error al obtener preguntas' });
-    }
-});
-
-// Endpoint para obtener preguntas difíciles
-app.get('/preguntas_imposibles', async (req, res) => {
-    try {
-        let queryText = `SELECT * FROM preguntas_imposibles`;
-        let db_response = await query(queryText);
-
-        if (db_response.rows.length > 0) {
-            res.status(200).json(db_response.rows);
-        } else {
-            res.status(404).json({ error: 'No se encontraron preguntas' });
-        }
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Error al obtener preguntas' });
-    }
-});
-
 // Endpoint para obtener un usuario por email
 app.get('/usuarios/:email', async (req, res) => {
     const email = req.params.email;
