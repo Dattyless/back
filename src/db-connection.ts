@@ -4,6 +4,9 @@ const connectionString = 'postgresql://proyecto_final_24_25_rwyr_user:7ccTb7oSW7
 
 const pool = new Pool({
   connectionString,
+  ssl: {
+    rejectUnauthorized: false, // Esto es necesario para conexiones con certificados autofirmados
+  },
 });
 
 export function query(text: string, params?: any[]) {
